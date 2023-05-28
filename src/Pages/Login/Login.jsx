@@ -1,16 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
+import login from '../../assets/others/authentication1.png'
+import { Link } from 'react-router-dom';
+import { AuthContext } from '../../Providers/AuthProvider';
 
 const Login = () => {
+    const [error, setError] = useState('');
     const [disabled, setDisabled] = useState(true);
     const captchaRef = useRef(null);
+    const { loginUser } = useContext(AuthContext)
 
     const handleLogin = event => {
         event.preventDefault();
+        setError('');
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
-        console.log( email, password)
+        loginUser(email, password)
+            .then(result => {
+                console.log(result.user)
+                alert('User login successfully')
+            })
+            .catch(error => {
+            setError(error.message)
+        })
     }
 
     const handleCaptchaValidate = () => {
@@ -30,10 +43,10 @@ const Login = () => {
         <div className="hero min-h-screen bg-slate-100">
             <div className="hero-content flex-col lg:flex-row">
                 <div className="text-center lg:text-left lg:w-1/2">
-                    <h1 className="text-5xl font-bold">Login now!</h1>
-                    <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+                    <img src={login} alt="" />
                 </div>
                 <div className="card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100">
+                    <h1 className="text-5xl font-bold text-center pt-4">Login!</h1>
                     <form onSubmit={handleLogin} className="card-body">
                         <div className="form-control">
                             <label className="label">
@@ -58,8 +71,10 @@ const Login = () => {
                             <button onClick={handleCaptchaValidate} className='btn btn-outline btn-xs mt-4'>Match Captcha</button>
                         </div>
                         <div className="form-control mt-6">
-                            <input disabled= {disabled} className="btn btn-primary" type="submit" value="Login" />
+                            <input disabled={disabled} className="btn bg-[#D1A054] text-white" type="submit" value="Login" />
                         </div>
+                        <p className='py-2'>New to this site? <Link className='text-blue-500 hover:underline' to="/register">Register First</Link> </p>
+                        <p className='text-red-600'>{ error }</p>
                     </form>
                 </div>
             </div>
