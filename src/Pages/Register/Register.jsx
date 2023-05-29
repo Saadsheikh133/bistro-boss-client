@@ -1,11 +1,13 @@
 import React, { useContext, useState } from 'react';
 import register from '../../assets/others/authentication2.png'
 import { AuthContext } from '../../Providers/AuthProvider';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Register = () => {
-    const { signUpUser } = useContext(AuthContext)
+    const { signUpUser, updateUserProfile, logOut } = useContext(AuthContext)
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleRegister = event => {
         event.preventDefault();
@@ -13,11 +15,28 @@ const Register = () => {
         const form = event.target;
         const name = form.name.value;
         const email = form.email.value;
+        const photo = form.photo.value;
         const password = form.password.value;
         signUpUser(email, password)
             .then(result => {
                 console.log(result.user)
-                alert('User has been created successfully')
+                Swal.fire({
+                    title: 'User has been created successfully.',
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp'
+                    }
+                })
+                updateUserProfile(name, photo)
+                    .then()
+                    .catch(error => setError(error.message))
+                form.reset();
+                logOut()
+                    .then()
+                    .catch(error => setError(error.message))
+                navigate('/login')
             })
             .catch(error => {
             setError(error.message)
@@ -37,6 +56,12 @@ const Register = () => {
                                 <span className="label-text">Name</span>
                             </label>
                             <input type="text" name='name' placeholder="name" className="input input-bordered bg-slate-200" required />
+                        </div>
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text">Photo URL</span>
+                            </label>
+                            <input type="url" name='photo' placeholder="photo url" className="input input-bordered bg-slate-200" required />
                         </div>
                         <div className="form-control">
                             <label className="label">

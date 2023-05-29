@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../Providers/AuthProvider';
+import { FaShoppingCart } from 'react-icons/fa';
 
 const Navbar = () => {
+    const { user, logOut } = useContext(AuthContext)
+    
+    const handleLogOut = () => {
+        logOut()
+            .then()
+        .catch(error => console.log(error))
+    }
+
    const navItems = <>
        <li><Link to = "/">Home</Link></li>
        <li><Link to = "/menuPage">Menu</Link></li>
        <li><Link to = "/order/salad">Order Food</Link></li>
-       <li><Link to = "/login">Login</Link></li>
-       <li><Link to = "/register">Sign Up</Link></li>
+       <li>
+           <Link to = "/">
+               <button className="btn gap-2">
+                   <FaShoppingCart></FaShoppingCart>
+                   <div className="badge badge-secondary">+99</div>
+               </button>
+           </Link>
+       </li>
     </>
     return (
         <nav>
@@ -29,7 +45,20 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
-                    <a className="btn">Get started</a>
+                    {
+                        user ?
+                            <>
+                                <div className="tooltip tooltip-bottom" data-tip={user?.displayName}>
+                                    <img className='rounded-full h-14 mr-2' src={user?.photoURL} alt="" />
+                                </div>
+                            <button onClick={handleLogOut} className='btn btn-primary'>Log Out</button>
+                            </>
+                            :
+                            <>
+
+                                <button className='btn btn-primary'><Link to="/login">Login</Link></button>
+                            </>
+                    }
                 </div>
             </div>
         </nav>
