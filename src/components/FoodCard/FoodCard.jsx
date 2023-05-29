@@ -1,24 +1,52 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Swal from 'sweetalert2';
+import { AuthContext } from '../../Providers/AuthProvider';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useCard from '../../Hooks/useCard';
 
 const FoodCard = ({item}) => {
-    const { image, name, price, recipe } = item;
+    const { image, name, price, recipe, _id } = item;
+    const { user } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [, refetch] = useCard();
 
     const handleAddToCard = item => {
-        fetch('http://localhost:5000/carts')
-            .then(res => res.json())
-            .then(data => {
-                if (data.insertedId) {
-                    Swal.fire({
-                        position: 'top-center',
-                        icon: 'success',
-                        title: 'Your work has been saved',
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
-
+        if (user && user?.email) {
+            const cartItem = {itemId: _id, name, image, price, email: user?.email}
+            fetch('http://localhost:5000/carts', {
+                method: 'POST',
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify(cartItem)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.insertedId) {
+                        refetch();  //refetch cart to update the number of items in the cart.
+                        Swal.fire({
+                            position: 'top',
+                            icon: 'success',
+                            title: 'Item added to cart',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+            })
+        }
+        else {
+            Swal.fire({
+                title: 'Login first to add food card',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Login now!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                   navigate('/login', {state: {from: location}})
                 }
-        })
+            })
+        }
     }
 
     return (
