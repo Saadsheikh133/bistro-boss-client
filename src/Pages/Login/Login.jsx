@@ -4,6 +4,7 @@ import login from '../../assets/others/authentication1.png'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Providers/AuthProvider';
 import Swal from 'sweetalert2';
+import SocialLogin from '../Shared/SocialLogin/SocialLogin';
 
 const Login = () => {
     const [error, setError] = useState('');
@@ -85,7 +86,8 @@ const Login = () => {
                             <input disabled={disabled} className="btn bg-[#D1A054] text-white" type="submit" value="Login" />
                         </div>
                         <p className='py-2'>New to this site? <Link className='text-blue-500 hover:underline' to="/register">Register First</Link> </p>
-                        <p className='text-red-600'>{ error }</p>
+                        <p className='text-red-600'>{error}</p>
+                        <SocialLogin></SocialLogin>
                     </form>
                 </div>
             </div>

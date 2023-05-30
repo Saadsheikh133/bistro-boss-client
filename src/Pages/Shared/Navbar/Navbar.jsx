@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { AuthContext } from '../../../Providers/AuthProvider';
 import { FaShoppingCart } from 'react-icons/fa';
 import useCard from '../../../Hooks/useCard';
@@ -15,17 +15,18 @@ const Navbar = () => {
     }
 
    const navItems = <>
-       <li><Link to = "/">Home</Link></li>
-       <li><Link to = "/menuPage">Menu</Link></li>
-       <li><Link to = "/order/salad">Order Food</Link></li>
+       <li><NavLink to = "/">Home</NavLink></li>
+       <li><NavLink to = "/menuPage">Menu</NavLink></li>
+       <li><NavLink to = "/order/salad">Order Food</NavLink></li>
        <li>
-           <Link to = "/">
+           <NavLink to = "/dashboard/myCart">
                <button className="btn gap-2">
                    <FaShoppingCart></FaShoppingCart>
                    <div className="badge badge-secondary">+{ cart?.length || 0 }</div>
                </button>
-           </Link>
+           </NavLink>
        </li>
+       <li><NavLink to="/dashboard/myCart">Dashboard</NavLink></li>
     </>
     return (
         <nav>

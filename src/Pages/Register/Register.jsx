@@ -3,6 +3,7 @@ import register from '../../assets/others/authentication2.png'
 import { AuthContext } from '../../Providers/AuthProvider';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import SocialLogin from '../Shared/SocialLogin/SocialLogin';
 
 const Register = () => {
     const { signUpUser, updateUserProfile, logOut } = useContext(AuthContext)
@@ -30,17 +31,29 @@ const Register = () => {
                     }
                 })
                 updateUserProfile(name, photo)
-                    .then()
+                    .then(() => {
+                        const saveUser = {name, email}
+                        fetch('http://localhost:5000/users', {
+                            method: 'POST',
+                            headers: { "content-type": "application/json" },
+                            body: JSON.stringify(saveUser)
+                        })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.insertedId) {
+                                    form.reset();
+                                    logOut()
+                                        .then()
+                                        .catch(error => setError(error.message))
+                                    navigate('/login')
+                                }
+                            })
+                    })
                     .catch(error => setError(error.message))
-                form.reset();
-                logOut()
-                    .then()
-                    .catch(error => setError(error.message))
-                navigate('/login')
             })
             .catch(error => {
-            setError(error.message)
-        })
+                setError(error.message)
+            })
     }
     return (
         <div className="hero min-h-screen bg-slate-100">
@@ -79,8 +92,9 @@ const Register = () => {
                             <input className="btn bg-[#D1A054] text-white" type="submit" value="Register" />
                         </div>
                         <p className='py-2'>Already have an account? <Link className='text-blue-500 hover:underline' to="/login">Login Now</Link> </p>
-                        
-                        <p className='text-red-600'>{ error }</p>
+
+                        <p className='text-red-600'>{error}</p>
+                        <SocialLogin></SocialLogin>
                     </form>
                 </div>
             </div>
