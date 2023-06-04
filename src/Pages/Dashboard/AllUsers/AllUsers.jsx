@@ -4,6 +4,7 @@ import SectionTitle from '../../../components/SectionTitle/SectionTitle';
 import { FaTrash, FaUserShield } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../../Hooks/useAxiosSecure';
+import { Helmet } from 'react-helmet-async';
 
 const AllUsers = () => {
     const [axiosSecure] = useAxiosSecure();
@@ -38,6 +39,9 @@ const AllUsers = () => {
     return (
         <div>
             <SectionTitle heading='MANAGE ALL USERS' subHeading='How many??'></SectionTitle>
+            <Helmet>
+                <title>Bistro Boss | All Users</title>
+            </Helmet>
             <h2 className='text-3xl font-semibold my-4'>Total Users:   {users.length}</h2>
             <div className="overflow-x-auto">
                 <table className="table w-full">

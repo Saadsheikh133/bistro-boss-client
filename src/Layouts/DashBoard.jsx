@@ -12,7 +12,6 @@ const DashBoard = () => {
     // TODO: load data from the server to have dynamic isAdmin based on data.
     // const isAdmin = true;
     const [isAdmin] = useAdmin();
-    console.log(isAdmin)
     return (
         <div className="drawer drawer-mobile bg-slate-100">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -38,7 +37,7 @@ const DashBoard = () => {
                                     </NavLink>
                                 </li>
                                 <li className='uppercase '>
-                                    <NavLink to="/dashboard/items">
+                                    <NavLink to="/dashboard/addItem">
                                         <FaUtensils></FaUtensils>
                                         Add Items
                                     </NavLink>
