@@ -4,12 +4,15 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { IoMenu } from "react-icons/io5";
 import { HiShoppingBag } from "react-icons/hi";
 import useCard from '../Hooks/useCard';
+import useAdmin from '../Hooks/useAdmin';
 
 const DashBoard = () => {
     const [cart] = useCard();
 
     // TODO: load data from the server to have dynamic isAdmin based on data.
-    const isAdmin = true;
+    // const isAdmin = true;
+    const [isAdmin] = useAdmin();
+    console.log(isAdmin)
     return (
         <div className="drawer drawer-mobile bg-slate-100">
             <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
