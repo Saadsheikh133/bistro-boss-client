@@ -46,14 +46,14 @@ const AuthProvider = ({ children }) => {
             if (currentUser) {
                 axios.post('http://localhost:5000/jwt', { email: currentUser.email })
                     .then(data => {
-                        localStorage.setItem('access-token', data.data)
+                        localStorage.setItem('access-token', data.data);
+                        setLoading(false)
                     })
 
             }
             else {
                 localStorage.removeItem('access-token')
             }
-            setLoading(false)
         });
         return () => {
            return unsubscribe()
