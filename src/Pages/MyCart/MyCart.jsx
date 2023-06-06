@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import SectionTitle from '../../components/SectionTitle/SectionTitle';
 import { FaTrash } from 'react-icons/fa';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 const MyCart = () => {
     const [cart, refetch] = useCard();
@@ -47,7 +48,9 @@ const MyCart = () => {
                 <div className='uppercase md:flex justify-evenly py-4 lg:px-4'>
                     <h2 className='text-3xl font-bold'>total items: {cart.length}</h2>
                     <h2 className='text-3xl font-bold'>total price: ${total}</h2>
-                    <button className='btn bg-[#D1A054] border-none btn-sm'>PAY</button>
+                    <Link to="/dashboard/payment">
+                        <button className='btn bg-[#D1A054] border-none btn-sm'>PAY</button>
+                    </Link>
                 </div>
                 <div className="overflow-x-auto w-full">
                     <table className="table w-full">

@@ -8,6 +8,7 @@ const AdminRoute = ({children}) => {
     const { user, loading } = useContext(AuthContext);
     const location = useLocation();
     const [isAdmin, isAdminLoading] = useAdmin();
+    console.log(isAdmin, isAdminLoading)
 
     if (loading && isAdminLoading) {
         return <ColorRing
